@@ -74,5 +74,20 @@ In general, you can develop Feature Cloud apps in any programming language and f
 
 The Python template already ships a small web server implementing the FeatureCloud API.
 
+### Docker
+As a FC app will be a dockerized web server, the whole directory is put into a docker container and the webserver will run in a corresponding python environment. Therefore, the requirements.txt file needs to contain all python pip packages that should be available in the docker container. Files that are not needed in the docker container (sample data, tests, etc.) can be specified in the .dockerignore file. Finally, the app can be dockerized running the build.sh script, after the image name was adapted in the script.
+
+### Webserver
+The webserver is executed through the main.py. This happens automatically in the dockercontainer, so in general, a developer does not need to touch the main.py and the files stored in the server_config folder. Only change these files, if you really know what you are doing!
+
+### App algorithm
+The app folder stores the files for the actual app execution. The api_ctrl.py implements the FeatureCloud API. Usually, nothing needs to be changed here, as the logic is outsourced to the logic.py. The api_web.py allows the developers to implement a frontend for the application.
+
+The logic.py implements the actual procedure of the federated computation. It already provides the necessary variables:
+- status_available: Indicates wheter there is data to share. If set to true, make sure data_outgoing is available and contains data.
+- status_finished: Stops the client if True
+- data_incoming: Contains the incoming data broadcasted by the coordinator to the participants or sent by the participants to the coordinator
+
+
 
 
