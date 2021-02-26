@@ -146,7 +146,9 @@ state_finishing = 6
 
 Now the state machine checks continously in which state the app currently is, and performs the corresponding computation. Note again, that your app needs to support both, coordinator and participants. This is why depending of the clients role, different states are reached. For example, only the coordinator will reach the global computation state, while the participant is waiting in the global gather state at the same time for the global result.
 
-What actually happens in each state and in the app is completely open to the app developer. You can find more examples, such as a Linear Regression (one iteration) or Logistic Regression (multiple iterations) in our GitHub repository: https://github.com/FeatureCloud
+What actually happens in each state and in the app is completely open to the app developer. You can find more examples, such as a Linear Regression (one iteration) or Logistic Regression (multiple iterations) in our GitHub repository: https://github.com/FeatureCloud.
+
+The actual methods of the algorithms are outsourced into the algo.py in this example. In this way, you can simply add methods to the file that can then be used in the federated computation. However, you can also directly write your code into the logic.py files into the corresponding state.
 
 
 
