@@ -81,12 +81,72 @@ As a FC app will be a dockerized web server, the whole directory is put into a d
 The webserver is executed through the main.py. This happens automatically in the dockercontainer, so in general, a developer does not need to touch the main.py and the files stored in the server_config folder. Only change these files, if you really know what you are doing!
 
 ### App algorithm
-The app folder stores the files for the actual app execution. The api_ctrl.py implements the FeatureCloud API. Usually, nothing needs to be changed here, as the logic is outsourced to the logic.py. The api_web.py allows the developers to implement a frontend for the application.
+The app folder stores the files for the actual app execution. The api_ctrl.py implements the FeatureCloud API. Usually, nothing needs to be changed here, as the logic is outsourced to the logic.py.:
+
+```
+@api_server.post('/setup')
+def ctrl_setup():
+    ...
+
+
+@api_server.get('/status')
+def ctrl_status():
+    ...
+
+
+@api_server.route('/data', method='GET')
+def ctrl_data_out():
+    ...
+
+
+@api_server.route('/data', method='POST')
+def ctrl_data_in():
+    ...
+```
+
+The api_web.py allows the developers to implement a frontend for the application. The following example shows the current progress of the app:
+
+```
+@web_server.route('/')
+def index():
+    print(f'[WEB] GET /', flush=True)
+    return f'Progress: {logic.progress}'
+```
 
 The logic.py implements the actual procedure of the federated computation. It already provides the necessary variables:
-- status_available: Indicates wheter there is data to share. If set to true, make sure data_outgoing is available and contains data.
-- status_finished: Stops the client if True
-- data_incoming: Contains the incoming data broadcasted by the coordinator to the participants or sent by the participants to the coordinator
+- `status_available`: Indicates wheter there is data to share. If set to true, make sure data_outgoing is available and contains data.
+- `status_finished`: Stops the client if True
+- `data_incoming`: Contains the incoming data broadcasted by the coordinator to the participants or sent by the participants to the coordinator
+- `data_outgoing`: Contains the data that should be send to the coordinator or broadcasted to the other participants.
+- `id`, `coordinator`, `clients`: These variables are set during the setup API call through the `handle_setup()`function. They contain the id of the participant, if this is a coordinator or participant and the overall number of clients participating in the computation 
+
+The following methods handle the data exchange between coordinator and participants, but usually do not need to be changed:
+```
+def handle_incoming(self, data):
+    # This method is called when new data arrives
+    self.data_incoming.append(json.load(data))
+
+def handle_outgoing(self):
+    # This method is called when data is requested
+    self.status_available = False
+    return self.data_outgoing
+```
+
+The main function, that needs to be adapted by the app developers is the `app_flow()` function. It contains a state machine, and the different states of the app can be defined. The number of each state must be unique, the order does not matter:
+
+```
+# === States ===
+state_initializing = 1
+state_local_gather = 2
+state_local_computation = 3
+state_global_gather = 4
+state_global_computation = 5
+state_finishing = 6
+```
+
+Now the state machine checks continously in which state the app currently is, and performs the corresponding computation. Note again, that your app needs to support both, coordinator and participants. This is why depending of the clients role, different states are reached. For example, only the coordinator will reach the global computation state, while the participant is waiting in the global gather state at the same time for the global result.
+
+What actually happens in each state and in the app is completely open to the app developer. You can find more examples, such as a Linear Regression (one iteration) or Logistic Regression (multiple iterations) in our GitHub repository: https://github.com/FeatureCloud
 
 
 
