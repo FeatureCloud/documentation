@@ -135,13 +135,13 @@ def handle_outgoing(self):
 The main function, that needs to be adapted by the app developers is the `app_flow()` function. It contains a state machine, and the different states of the app can be defined. The number of each state must be unique, the order does not matter:
 
 ```
-# === States ===
+ # === States ===
 state_initializing = 1
-state_local_gather = 2
+state_read_input = 2
 state_local_computation = 3
-state_global_gather = 4
-state_global_computation = 5
-state_finishing = 6
+state_wait_for_aggregation = 4
+state_global_aggregation = 5
+state_finish = 6
 ```
 
 Now the state machine checks continously in which state the app currently is, and performs the corresponding computation. Note again, that your app needs to support both, coordinator and participants. This is why depending of the clients role, different states are reached. For example, only the coordinator will reach the global computation state, while the participant is waiting in the global gather state at the same time for the global result.
