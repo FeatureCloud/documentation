@@ -150,6 +150,8 @@ What actually happens in each state and in the app is completely open to the app
 
 The actual methods of the algorithms are outsourced into the algo.py in this example. In this way, you can simply add methods to the file that can then be used in the federated computation. However, you can also directly write your code into the logic.py files into the corresponding state.
 
+## Publish you App in the AI Store
+
 
 
 
