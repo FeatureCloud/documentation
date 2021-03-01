@@ -152,6 +152,13 @@ The actual methods of the algorithms are outsourced into the algo.py in this exa
 
 ## Publish you App in the AI Store
 
+1. Login to your FeatureCloud account
+2. Make sure that you have the developer tools enabled in your account
+3. Go to the AI store and click 'Create App' in the developer section
+4. Fill in the app details and choose an image name
+5. Build your docker image and tag it with registry.featurecloud.eu:5000/image_name, where image_name is the name you chose previously
+6. Your app should now appear in the app store as uncertified app and can be used by other users
+
 
 
 
