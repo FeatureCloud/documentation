@@ -57,6 +57,9 @@ then final results, including a plot displaying the performance.
 
 The results obtained for a single participant using data split 1 can be found in the folder `data/results/1`.
 
+The computation should complete in less than 15 minutes on a usual personal computer and can be faster, depending on 
+the internet connection.
+
 ### Having issues using FeatureCloud?
 
 If you encounter a problem, don't hesitate to raise an issue in this repository.
