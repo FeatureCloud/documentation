@@ -5,7 +5,7 @@ This guide helps you set up the FeatureCloud controller.
 ## Requirements
 
 You need to have Docker installed (at lease version 19). You can get it at https://docker.com.
-It is available for Windows, Linux and macOS and has been tested on Windows 10, Ubuntu and macOS .
+It is available for Windows, Linux and macOS and has been tested on Windows 10, Ubuntu 20.04 and macOS 10.15 and 11.
 
 In order to execute an app from the AI store, you also need to create an account on https://featurecloud.ai.
 
