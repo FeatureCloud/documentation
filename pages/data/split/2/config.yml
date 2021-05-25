@@ -1,0 +1,74 @@
+fc_cross_validation:
+  input:
+    data: "data.csv" # File containing the actual data
+    label_column: "y" # Name of the column including the labels. Can be None if stratify is false
+    sep: "," # Separator of the data file.
+  output:
+    train: "train.csv" # Output filename of the train set
+    test: "test.csv" # Output filename of the test set
+    split_dir: "data" # name of the dir including the splits
+  cross_validation:
+    n_splits: 10 # number of splits
+    shuffle: true # Data will be shuffled before splits are created
+    stratify: false # If true, labels will be equally distributed between the splits. If true, label_column cannot be Null
+    random_state: Null # Seed to create reproducible splits, Null possible
+
+fc_normalization:
+  input:
+    train: "train.csv"
+    test: "test.csv"
+  output:
+    train: "train_normalized.csv"
+    test: "test_normalized.csv"
+  format:
+    sep: ","
+    label: "y"
+  split:
+    mode: directory
+    dir: data
+  normalization: variance
+
+fc_random_forest:
+  input:
+    train: "train_normalized.csv"
+    test: "test_normalized.csv"
+  output:
+    pred: "pred.csv"
+    proba: "proba.csv"
+    test: "test.csv"
+  format:
+    sep: ","
+    label: "y"
+  split:
+    mode: directory
+    dir: data
+  estimators: 100
+  mode: classification
+  random_state: 42
+
+fc_logistic_regression:
+  input:
+    train: "train_normalized.csv"
+    test: "test_normalized.csv"
+  output:
+    pred: "pred.csv"
+    proba: "proba.csv"
+    test: "test.csv"
+  format:
+    sep: ","
+    label: "y"
+  split:
+    mode: "directory"
+    dir: "data"
+  algo:
+    max_iterations: 10000
+
+fc_classification_evaluation:
+  input:
+    y_true: "test.csv"
+    y_pred: "pred.csv"
+  format:
+    sep: ","
+  split:
+    mode: "directory" # or file
+    dir: "data" # or "." for root directory
