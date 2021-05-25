@@ -55,6 +55,8 @@ After uploading the data the workflow will start. From now on, no user interacti
 finished. Each step in the workflow will produce intermediate data, which you can download. The last step will produce
 then final results, including a plot displaying the performance.
 
+The results obtained for a single participant using data split 1 can be found in the folder `data/results/1`.
+
 ### Having issues using FeatureCloud?
 
 If you encounter a problem, don't hesitate to raise an issue in this repository.
